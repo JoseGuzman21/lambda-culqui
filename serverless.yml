@@ -1,0 +1,32 @@
+service: aws-lambda-culqui
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: us-east-2
+  runtime: nodejs16.x
+  memorySize: 128
+
+functions:
+  handler:
+    handler: src/index.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+  createCard:
+    handler: src/card.saveCard
+    events:
+      - httpApi:
+          path: /tokens
+          method: post
+  getCard:
+    handler: src/card.getCardByToken
+    events:
+      - httpApi:
+          path: /card/{token}
+          method: get
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
